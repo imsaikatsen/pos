@@ -66,9 +66,9 @@
                  </thead>
                  <tbody>
                    <tr>
-                     <td>1</td>
                      <td></td>
-                     <td>2222</td>
+                     <td></td>
+                     <td></td>
                      <td></td>
                      <td></td>
                      <td></td>
