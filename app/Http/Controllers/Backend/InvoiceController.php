@@ -147,7 +147,12 @@ class InvoiceController extends Controller
 				$product->quantity = ((float)$product->quantity)-((float)$request->selling_qty[$key]);
 				$product->save();
 			}
+			$invoice->save();
 		});
 		return redirect()->route('invoice.pending.list')->with('success','Invoice Successfully Approved');
+	}
+	public function printInvoiceList(){
+		$allData = Invoice::orderBy('date','desc')->orderBy('id','desc')->where('status','1')->get();
+   		return view('backend.invoice.pos-invoice-list',compact('allData'));
 	}
 }

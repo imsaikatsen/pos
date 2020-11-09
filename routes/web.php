@@ -121,6 +121,8 @@ Route::group(['middleware' => 'auth'], function(){
 	Route::get('/approve/{id}', 'Backend\InvoiceController@approve')->name('invoice.approve');
 	Route::get('/delete/{id}', 'Backend\InvoiceController@delete')->name('invoice.delete');
 	Route::post('/approve/store/{id}', 'Backend\InvoiceController@approvalStore')->name('approval.store');
+	Route::get('/print/list', 'Backend\InvoiceController@printInvoiceList')->name('invoice.print.list');
+	Route::get('/print/{id}', 'Backend\InvoiceController@printInvoice')->name('invoice.print');
 	});
 
 });
