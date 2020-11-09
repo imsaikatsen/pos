@@ -52,35 +52,67 @@
                    </tr>
                  </tbody>
                </table>
-               <table border="1" width="100%">
-                 <thead>
+              <form action="{{route('approval.store',$invoice->id)}}" method="post">
+                @csrf
+                <table border="1" width="100%" style="margin-bottom: 10px;">
+                  <thead>
+                    <tr class="text-center">
+                      <th>SL.</th>
+                      <th>Category</th>
+                      <th>Product Name</th>
+                      <th style="background: #ddd; padding: 1px;">Current Stock</th>
+                      <th>Quantity</th>
+                      <th>Unit Price</th>
+                      <th>Total Price</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    @php
+                        $total_sum = '0';
+                    @endphp
+                  @foreach($invoice['invoice_details'] as $key => $details)
+                    <tr class="text-center">
+                    <input type="hidden" name="category_id[]" value="{{$details->category_id}}">
+                    <input type="hidden" name="product_id[]" value="{{$details->product_id}}">
+                    <input type="hidden" name="selling_qty[{{$details->id}}]" value="{{$details->selling_qty}}">
+                    <td>{{$key+1}}</td>
+                    <td>{{$details['category']['name']}}</td>
+                    <td>{{$details['product']['name']}}</td>
+                     <td style="background: #ddd; padding: 1px;">
+                       {{$details['product']['quantity']}}
+                     </td>
+                   <td>{{$details->selling_qty}}</td>
+                   <td>{{$details->unit_price}}</td>
+                   <td>{{$details->selling_price}}</td>
+                    </tr>
+                    @php
+                        $total_sum += $details->selling_price;
+                    @endphp
+                   @endforeach
                    <tr>
-                     <th>SL.</th>
-                     <th>Category</th>
-                     <th>Product Name</th>
-                     <th class="text-center" style="background: #ddd; padding: 1px;">Current Stock</th>
-                     <th>Quantity</th>
-                     <th>Unit Price</th>
-                     <th>Total Price</th>
+                     <td colspan="6" class="text-right"><strong>Sub Total</strong></td>
+                   <td class="text-center"><strong>{{$total_sum}}</strong></td>
                    </tr>
-                 </thead>
-                 <tbody>
                    <tr>
-                     <td></td>
-                     <td></td>
-                     <td></td>
-                     <td></td>
-                     <td></td>
-                     <td></td>
-                     <td></td>
+                     <td colspan="6" class="text-right">Discount</td>
+                   <td class="text-center"><strong>{{$payment->discount_amount}}</strong></td>
                    </tr>
-                 </tbody>
-               </table>
-               <table>
-                 <tbody>
-                   
-                 </tbody>
-               </table>
+                   <tr>
+                     <td colspan="6" class="text-right">Paid Amount</td>
+                   <td class="text-center"><strong>{{$payment->paid_amount}}</strong></td>
+                   </tr>
+                   <tr>
+                     <td colspan="6" class="text-right">Due Amount</td>
+                   <td class="text-center"><strong>{{$payment->due_amount}}</strong></td>
+                   </tr>
+                   <tr>
+                     <td colspan="6" class="text-right"><strong>Total</strong></td>
+                   <td class="text-center"><strong>{{$payment->total_amount}}</strong></td>
+                   </tr>
+                  </tbody>
+                </table>
+                <button type="submit" class="btn btn-success">Invoice Approve</button>
+               </form>
               </div><!-- /.card-body -->
             </div>
             <!-- /.card -->
